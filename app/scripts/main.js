@@ -200,7 +200,6 @@ $(function () {
       loadTask(boundData);
     })
     .on('click', '#final-report-btn', function () {
-      debugger;
       if ($(this).is('[disabled]')) return;
       drawFinalReport();
     });
