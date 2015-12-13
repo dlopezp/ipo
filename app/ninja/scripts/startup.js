@@ -34,7 +34,8 @@
             $(this).contents().find('body')
               .on('click', function () { 
                 clickOnIframe()
-              });
+              })
+              .find('.page-link').hide();
           });
     }
 }());

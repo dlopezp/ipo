@@ -19,7 +19,8 @@ $(function () {
       'name': 'Comunes',
       'tasks': [{
         'name': 'Login',
-        'timeExpected': 15
+        'timeExpected': 15,
+        'btn': 'login'
       }]
     }, {
       'name': 'Administrador',
@@ -109,21 +110,41 @@ $(function () {
   var loadTask = function (task) {
     var frameSrc = location.href.replace('index.html', '');
     frameSrc += 'ninja/index.html';
-    console.log(frameSrc);
-    $iframe
-      .addClass('invisible')
-      .attr({src: frameSrc})
-      .one('load', function () {
-        $(this).contents().find('body').find('iframe').one('load', function () {
-          var $btn = $(this).contents().find(task.btn);
-
-          setTimeout(function () {
-            $btn.click();
-            $iframe.removeClass('invisible');
-            initTask(task);
-          }, 1000);
+    
+    if (task.btn === 'login') {
+      $iframe
+        .addClass('invisible')
+        .attr({src: frameSrc})
+        .one('load', function () {
+          $(this).contents().find('body').find('iframe').one('load', function () {
+            var that = this;
+            setTimeout(function () {
+              var currentSrc = this.frames[0].frames[0].location.href;
+              console.log(currentSrc);
+              this.frames[0].frames[0].location.href = 'http://localhost:9000/ninja/pages/6a057175-8c4b-d977-cd25-1d98396e3a4b.html';
+              //currentSrc = currentSrc.replace = 'pages/6a057175-8c4b-d977-cd25-1d98396e3a4b.html'
+              //location.href = 'pages/6a057175-8c4b-d977-cd25-1d98396e3a4b.html';
+              $iframe.removeClass('invisible');
+              initTask(task);
+            }, 1000);
+          });
         });
-      });
+    } else {
+      $iframe
+        .addClass('invisible')
+        .attr({src: frameSrc})
+        .one('load', function () {
+          $(this).contents().find('body').find('iframe').one('load', function () {
+            var $btn = $(this).contents().find(task.btn);
+
+            setTimeout(function () {
+              $btn.click();
+              $iframe.removeClass('invisible');
+              initTask(task);
+            }, 1000);
+          });
+        });
+    }
   };
 
   var initTask = function (task) {
